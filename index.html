@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="pt-BR">
+
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="theme-color" content="#173f35" />
+        <title>JJTech • Controle de Estoque</title>
+    </head>
+
+    <body>
+        <div id="demo-login" class="demo-login" aria-label="Login da demonstração">
+            <div class="demo-login-card">
+                <img src="/logo-jjtech.jpeg" alt="JJTech" />
+                <span>DEMO</span>
+                <h1>JJTech Estoque</h1>
+                <p>Entre para acessar seu dashboard</p>
+                <form id="demo-login-form">
+                    <label>E-mail<input id="demo-email" type="email" placeholder="voce@exemplo.com" required /></label>
+                    <label>Senha<input id="demo-password" type="password" placeholder="Qualquer senha"
+                            required /></label>
+                    <button type="submit">Entrar</button>
+                </form>
+                <small>Demo local: qualquer e-mail e senha preenchidos são aceitos.</small>
+            </div>
+        </div>
+        <div id="root"></div>
+        <script>
+            document.getElementById('demo-login-form').addEventListener('submit', function (event) {
+                event.preventDefault();
+                localStorage.setItem('jjtech-demo-user', document.getElementById('demo-email').value.trim());
+                document.getElementById('demo-login').hidden = true;
+            });
+        </script>
+        <script type="module" src="/src/main.jsx"></script>
+    </body>
+
+</html>
