@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { X } from 'lucide-react';
 import DateInput from './DateInput';
+import { countDemoStockRegistrations, DEMO_REGISTRATION_LIMIT } from './demoLimits';
 
 const CATEGORY_OPTIONS = ['Alimentos Secos', 'Carnes', 'Hortifruti', 'Laticínios'];
 const SUPPLIER_OPTIONS = ['AGROVIDA', 'COOPAFASP', 'AGUA PRETA', 'DA TERRA', 'ELCILAINE', 'FRANCISCO', 'LUIZ RAFAEL', 'MAURICIO', 'MARCIA CORREA', 'REGINALDO', 'PEDRO GERALDO', 'HORÁCIO', 'CCF NUTRI', 'FEC', 'FRIGOBOI', 'MERCADO CENTRAL', 'SENGÉS', 'STS', 'DA ROÇA', 'QUITANDA FRUTASOL'];
@@ -22,6 +23,8 @@ export default function ProductModal({ modal, products, onClose, onSave, onAddPr
 
     const change = (key, value) => setForm(current => ({ ...current, [key]: value }));
     const isNew = modal.type === 'newProduct';
+    const stockRegistrationCount = countDemoStockRegistrations(products);
+    const stockLimitReached = stockRegistrationCount >= DEMO_REGISTRATION_LIMIT;
 
     return (
         <div className="overlay">
@@ -38,7 +41,8 @@ export default function ProductModal({ modal, products, onClose, onSave, onAddPr
                             <label>Unidade<input value={form.unit} onChange={event => change('unit', event.target.value)} /></label>
                         </div>
                         <label>Estoque mínimo<input type="number" min="0" value={form.minStock} onChange={event => change('minStock', event.target.value)} /></label>
-                        <button className="primary full" onClick={() => form.name.trim() && onAddProduct(form)}>Cadastrar produto</button>
+                        <p role={stockLimitReached ? 'alert' : 'status'}>Versão demo: {stockRegistrationCount}/{DEMO_REGISTRATION_LIMIT} cadastros de estoque utilizados.{stockLimitReached && ' Limite atingido. Entre em contato conosco para liberar novos cadastros.'}</p>
+                        <button className="primary full" onClick={() => form.name.trim() && !stockLimitReached && onAddProduct(form)} disabled={stockLimitReached}>{stockLimitReached ? 'Limite de cadastros atingido' : 'Cadastrar produto'}</button>
                     </>
                 ) : (
                     <>

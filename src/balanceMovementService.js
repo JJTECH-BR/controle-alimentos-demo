@@ -3,7 +3,7 @@ export async function persistBalanceMovement({ supabase, product, form, userId, 
     if (!Number.isFinite(quantity) || quantity <= 0) return { error: 'Informe uma quantidade válida.' };
 
     const movement = {
-        id: crypto.randomUUID(),
+        id: form.id || crypto.randomUUID(),
         date: form.date || new Date().toISOString().slice(0, 10),
         time: new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
         product: product.name,
@@ -19,8 +19,7 @@ export async function persistBalanceMovement({ supabase, product, form, userId, 
     };
 
     if (supabase) {
-        const { error } = await supabase.from('balance_movements').insert({
-            id: movement.id,
+        const row = {
             product_id: product.id,
             type: movement.type,
             quantity: movement.quantity,
@@ -30,9 +29,19 @@ export async function persistBalanceMovement({ supabase, product, form, userId, 
             document_number: movement.document,
             user_id: userId || null,
             performed_by: movement.user
-        });
+        };
+        const request = form.id
+            ? supabase.from('balance_movements').update(row).eq('id', form.id)
+            : supabase.from('balance_movements').insert({ id: movement.id, ...row });
+        const { error } = await request;
         if (error) return { error: error.message };
     }
 
     return { movement };
+}
+
+export async function deleteBalanceMovement({ supabase, movement }) {
+    if (!supabase) return { error: null };
+    const { error } = await supabase.from('balance_movements').delete().eq('id', movement.id);
+    return { error: error?.message || null };
 }

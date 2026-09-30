@@ -217,9 +217,38 @@ body {
     margin-top: 8px;
 }
 
+.demoLimitNotice {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 16px;
+    padding: 12px 14px;
+    border: 1px solid #b8e3c9;
+    border-left: 4px solid var(--green);
+    border-radius: 8px;
+    background: #f1fbf5;
+    color: var(--text);
+}
+
+.demoLimitNotice div {
+    display: grid;
+    gap: 3px;
+}
+
+.demoLimitNotice span {
+    color: #53655a;
+    font-size: .82rem;
+}
+
+.demoLimitNotice strong {
+    color: #a1282b;
+    font-size: .82rem;
+}
+
 .balanceFilters {
     display: flex;
     align-items: end;
+    flex-wrap: wrap;
     gap: 12px;
     margin-bottom: 16px;
 }
@@ -238,7 +267,7 @@ body {
 
 .balanceActions {
     display: flex;
-    flex: 1.8;
+    flex: 1 0 100%;
     min-width: 0;
     gap: 10px;
 }
@@ -247,6 +276,11 @@ body {
     flex: 1;
     min-width: 0;
     justify-content: center;
+    min-height: 46px;
+    padding: 9px 12px;
+    text-align: center;
+    white-space: normal;
+    line-height: 1.2;
 }
 
 .balanceCards .card strong {
@@ -515,13 +549,29 @@ body.printing-report .reportPrint {
     margin: 0 0 8px;
 }
 
-.movementHistory div {
+.movementHistory > div {
     display: grid;
-    grid-template-columns: 1fr auto auto;
+    grid-template-columns: minmax(0, 1fr) auto auto auto;
+    align-items: center;
     gap: 14px;
     padding: 9px 0;
     border-bottom: 1px solid #eef2ef;
     font-size: .8rem;
+}
+
+.movementActions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.movementActions button {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    min-height: 32px;
+    padding: 6px 9px;
+    font-size: .74rem;
 }
 
 .movementHistory em {
@@ -686,6 +736,11 @@ body.printing-report .reportPrint {
         flex-direction: column;
     }
 
+    .balanceActions button {
+        flex-direction: row;
+        min-height: 46px;
+    }
+
     .reportOptions,
     .reportActions {
         flex-direction: column;
@@ -701,8 +756,13 @@ body.printing-report .reportPrint {
         grid-template-columns: repeat(2, 1fr);
     }
 
-    .movementHistory div {
+    .movementHistory > div {
         grid-template-columns: 1fr auto;
+    }
+
+    .movementActions {
+        grid-column: 1 / -1;
+        justify-content: flex-start;
     }
 
     .movementHistory em {
